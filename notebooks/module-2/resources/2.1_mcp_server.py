@@ -12,6 +12,7 @@ mcp = FastMCP("mcp_server")
 
 tavily_client = TavilyClient()
 
+# The MCP server defines Tools, Resources, and Prompts that the MCP client can use. These are defined using the @mcp decorators.
 
 # Tool for searching the web
 @mcp.tool()
