@@ -37,6 +37,7 @@ class UserCredentials(BaseModel):
 
 @tool
 def authenticate_user(user_credentials: UserCredentials) -> bool:
+    # TODO: rewrite to use abstractions to account for local (dummy) credentials and real credentials
     """Authenticate the user"""
 
     # Dummy authentication logic
@@ -44,9 +45,12 @@ def authenticate_user(user_credentials: UserCredentials) -> bool:
         return True
     return False
 
+# Tests that call functions with the @tool decorator need to be called with the StructuredTool.func attribute, see here: https://reference.langchain.com/python/langchain-core/tools/structured/StructuredTool/funcs
 def test_authenticate_user_returns_true_with_correct_credentials():
     user_credentials = UserCredentials(username="user", password="password")
-    assert authenticate_user(user_credentials) == True
+
+    result = authenticate_user.func(user_credentials)
+    assert result == True
     assert isinstance(user_credentials, UserCredentials)
 
 ### Email reading logic
@@ -69,6 +73,7 @@ class EmailData(BaseModel):
 
 @tool
 def read_email(emails: dict, email_id: str) -> dict:
+    # TODO: rewrite to use abstractions to account for local (dummy) email data and real data
 
     """Return the email"""
 
@@ -80,7 +85,7 @@ def test_existing_email_id_returns_email_content():
     }
     email_id = "1"
 
-    result = read_email(test_emails, email_id)
+    result = read_email.func(test_emails, email_id)
 
     assert isinstance(result, EmailData)
     assert result.content == "Hi, this is some test content."
